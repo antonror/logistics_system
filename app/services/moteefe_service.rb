@@ -1,4 +1,4 @@
 # Main service
-class MoteefeService
+class MoteefeService < ApplicationService
 
 end
