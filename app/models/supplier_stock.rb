@@ -1,0 +1,2 @@
+class SupplierStock < ApplicationRecord
+end
