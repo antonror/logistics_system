@@ -68,6 +68,20 @@ RSpec.describe MoteefeService do
         expect(result[:shipments].count).to eq(2)
         expect(result[:shipments][0][:items][0][:title]).to eq('t-shirt')
         expect(result[:shipments][1][:items][0][:title]).to eq('hoodie')
+        expect(result[:shipments][0][:items][0][:count]).to eq(1)
+        expect(result[:shipments][1][:items][0][:count]).to eq(1)
+      end
+
+      # We want 10 t-shirts to be combined into single delivery
+      # using different suppliers
+      it 'should provide valid result for scenario 4' do
+        result = MoteefeService.new({ 't-shirt' => 10 }).call
+        expect(result[:delivery_date]).to eq(Date.today + 3.days)
+        expect(result[:shipments].count).to eq(2)
+        expect(result[:shipments][0][:items][0][:title]).to eq('t-shirt')
+        expect(result[:shipments][1][:items][0][:title]).to eq('t-shirt')
+        expect(result[:shipments][0][:items][0][:count]).to eq(7)
+        expect(result[:shipments][1][:items][0][:count]).to eq(3)
       end
     end
   end
