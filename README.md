@@ -1,3 +1,10 @@
+## Setup
+Simple Rails project. Please do the following: 
+
+1. bundle
+2. rails db:create, rails db:migrate
+3. run rspec
+
 ## Moteefe Coding Challenge
 Moteefe is an international company providing print on demand service. We
 have various products e.g
