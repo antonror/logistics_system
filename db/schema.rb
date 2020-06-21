@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 2020_06_21_113402) do
   create_table "supplier_stocks", force: :cascade do |t|
     t.string "product_name"
     t.string "supplier"
+    t.json "delivery_times"
     t.integer "in_stock"
   end
 

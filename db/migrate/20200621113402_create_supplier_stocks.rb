@@ -3,6 +3,7 @@ class CreateSupplierStocks < ActiveRecord::Migration[6.0]
     create_table :supplier_stocks do |t|
       t.string :product_name
       t.string :supplier
+      t.json :delivery_times
       t.integer :in_stock
     end
   end
