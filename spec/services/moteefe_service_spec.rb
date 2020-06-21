@@ -7,6 +7,7 @@ RSpec.describe MoteefeService do
     create(:supplier_stock, supplier: 'SupplierB', product_name: 't-shirt', delivery_times: { uk: 1, us: 8 }, in_stock: 7 )
     create(:supplier_stock, supplier: 'SupplierB', product_name: 'hoodie', delivery_times: { uk: 3, us: 8 }, in_stock: 4 )
     create(:supplier_stock, supplier: 'SupplierC', product_name: 'hoodie', delivery_times: { uk: 5, us: 8 }, in_stock: 7 )
+    create(:supplier_stock, supplier: 'SupplierD', product_name: 'hat', delivery_times: { uk: 5, us: 8 }, in_stock: 7 )
   end
 
   describe 'class hierarchy' do
@@ -41,7 +42,6 @@ RSpec.describe MoteefeService do
     end
 
     context 'with valid arguments' do
-
       # 7 t-shirts in stock as a maximum from 1 supplier
       # we take 8 to satisfy condition 1
       it 'should provide valid result for scenario 1' do
@@ -63,7 +63,7 @@ RSpec.describe MoteefeService do
       # We select single supplier with requested goods
       # for multi-line order
       it 'should provide valid result for scenario 3' do
-        result = MoteefeService.new({ 't-shirt' => 1 }, {'hoodie' => 1}).call
+        result = MoteefeService.new({ 't-shirt' => 1 }, { 'hoodie' => 1 }).call
         expect(result[:delivery_date]).to eq(Date.today + 3.days)
         expect(result[:shipments].count).to eq(2)
         expect(result[:shipments][0][:items][0][:title]).to eq('t-shirt')
@@ -82,6 +82,18 @@ RSpec.describe MoteefeService do
         expect(result[:shipments][1][:items][0][:title]).to eq('t-shirt')
         expect(result[:shipments][0][:items][0][:count]).to eq(7)
         expect(result[:shipments][1][:items][0][:count]).to eq(3)
+      end
+    end
+
+    context 'with incorrect arguments' do
+      it 'should_return error when failed to process extra qty' do
+        result = MoteefeService.new({ 't-shirt' => 30 }).call
+        expect(result).to eq('I CAN NOT COMBINE FROM MORE THAN 2 SUPPLIERS YET')
+      end
+
+      it 'should_return error when there are too many partial suppliers' do
+        result = MoteefeService.new({ 't-shirt' => 1 }, { 'hoodie' => 1 }, { 'hat' => 1 }).call
+        expect(result).to eq('I CAN NOT BUY MORE THAN 3 DIFFERENT ITEMS FROM SINGLE SUPPLIER YET')
       end
     end
   end

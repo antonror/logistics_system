@@ -82,7 +82,7 @@ class MoteefeService < ApplicationService
           ]
         }
       else
-        'I CAN NOT COMBINE FROM MORE THAN 2 SUPPLIERS YET'
+        @order_data =  'I CAN NOT COMBINE FROM MORE THAN 2 SUPPLIERS YET'
       end
     end
 
@@ -108,7 +108,7 @@ class MoteefeService < ApplicationService
         @order_data[:delivery_date] = delivery_date if @order_data[:delivery_date] < delivery_date
       end
     else
-      'I CAN NOT BUY MORE THAN 2 DIFFERENT ITEMS FROM SINGLE SUPPLIER YET'
+      @order_data = 'I CAN NOT BUY MORE THAN 3 DIFFERENT ITEMS FROM SINGLE SUPPLIER YET'
     end
   end
 
